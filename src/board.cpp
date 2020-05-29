@@ -1,23 +1,5 @@
 #include "board.h"
 
-bool Board::find(const Point& start, const Point& goal)
-{
-	mass_[start.y()][start.x()].setStatus(Mass::START);
-	mass_[goal.y()][goal.x()].setStatus(Mass::GOAL);
-
-	Point p = start;
-	while (p != goal) {
-		if (p != start) mass_[p.x()][p.y()].setStatus(Mass::WAYPOINT);
-
-		if (p.x() < goal.x()) { p.setX(p.x() + 1); continue; }
-		if (goal.x() < p.x()) { p.setX(p.x() - 1); continue; }
-		if (p.y() < goal.y()) { p.setY(p.y() + 1); continue; }
-		if (goal.y() < p.y()) { p.setY(p.y() - 1); continue; }
-	}
-
-	return false;
-}
-
 void Board::show() const 
 {
 	std::cout << std::endl;
@@ -33,25 +15,25 @@ void Board::show() const
 		for (int x = 0; x < BOARD_SIZE; x++) {
 			std::cout << "|";
 			switch (mass_[y][x].getStatus()) {
-			case Mass::BLANK:
+			case Mass::status::BLANK:
 				std::cout << " ";
 				break;
-			case Mass::START:
+			case Mass::status::START:
 				std::cout << "S";
 				break;
-			case Mass::GOAL:
+			case Mass::status::GOAL:
 				std::cout << "G";
 				break;
-			case Mass::WAYPOINT:
+			case Mass::status::WAYPOINT:
 				std::cout << "o";
 				break;
-			case Mass::WALL:
+			case Mass::status::WALL:
 				std::cout << "#";
 				break;
-			case Mass::WATER:
+			case Mass::status::WATER:
 				std::cout << "~";
 				break;
-			case Mass::ROAD:
+			case Mass::status::ROAD:
 				std::cout << "$";
 				break;
 			}
